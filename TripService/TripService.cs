@@ -21,11 +21,16 @@ namespace TripService
                 }
                 if (isFriend)
                 {
-                    tripList = TripDao.FindTripsByUser(user);
+                    tripList = TripsBy(user);
                 }
                 return tripList;
             }
             throw new UserNotLoggedInException();
+        }
+
+        protected virtual List<Trip> TripsBy(User user)
+        {
+            return TripDao.FindTripsByUser(user);
         }
 
         protected virtual User GetLoggedUser()

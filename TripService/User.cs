@@ -5,7 +5,7 @@ namespace TripService
     public class User
     {
         private readonly IList<User> _Friends = new List<User>();
-        private readonly IList<Trip> _Trips = new List<Trip>();
+        private readonly List<Trip> _Trips = new List<Trip>();
 
         public IEnumerable<User> GetFriends()
         {
@@ -22,7 +22,7 @@ namespace TripService
             _Trips.Add(trip);
         }
 
-        public IEnumerable<Trip> Trips()
+        public List<Trip> Trips()
         {
             return _Trips;
         }
