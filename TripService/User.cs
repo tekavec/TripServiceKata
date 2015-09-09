@@ -21,5 +21,10 @@ namespace TripService
         {
             _Trips.Add(trip);
         }
+
+        public IEnumerable<Trip> Trips()
+        {
+            return _Trips;
+        }
     }
 }

@@ -6,7 +6,13 @@ namespace TripService
     {
         public static List<Trip> FindTripsByUser(User user)
         {
-            throw new System.NotImplementedException();
+            var trips = new List<Trip>();
+            trips.AddRange(user.Trips());
+            foreach (var friend in user.GetFriends())
+            {
+                trips.AddRange(friend.Trips());
+            }
+            return trips;
         }
     }
 }
