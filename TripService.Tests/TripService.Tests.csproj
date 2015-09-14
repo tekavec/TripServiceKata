@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TripServiceShould.cs" />
+    <Compile Include="UnitTests\TripDaoShould.cs" />
     <Compile Include="UnitTests\UserShould.cs" />
     <Compile Include="UserBuilder.cs" />
   </ItemGroup>

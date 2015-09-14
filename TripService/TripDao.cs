@@ -8,5 +8,10 @@ namespace TripService
         {
             throw new System.NotImplementedException("Here would be a real implementation. This method must not be called from the tests.");
         }
+
+        public virtual List<Trip> TripsByUser(User user)
+        {
+            return FindTripsByUser(user);
+        }
     }
 }

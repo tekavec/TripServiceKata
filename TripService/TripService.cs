@@ -4,14 +4,20 @@ namespace TripService
 {
     public class TripService
     {
-        public List<Trip> GetTripsByUser(User user)
+        private readonly TripDao _TripDao = new TripDao();
+
+        public TripService(TripDao tripDao)
         {
-            User loggedUser = GetLoggedUser();
-            if (loggedUser == null)
+            _TripDao = tripDao;
+        }
+
+        public virtual List<Trip> GetTripsByUser(User user, User loggedInUser)
+        {
+            if (loggedInUser == null)
             {
                 throw new UserNotLoggedInException();
             }
-            return user.IsFriendWith(loggedUser)
+            return user.IsFriendWith(loggedInUser)
                 ? TripsBy(user) 
                 : NoTrips();
         }
@@ -23,12 +29,8 @@ namespace TripService
 
         protected virtual List<Trip> TripsBy(User user)
         {
-            return TripDao.FindTripsByUser(user);
+            return _TripDao.TripsByUser(user);
         }
 
-        protected virtual User GetLoggedUser()
-        {
-            return UserSession.GetInstance().GetLoggedUser();
-        }
     }
 }
