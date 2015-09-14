@@ -4,14 +4,13 @@ namespace TripService.Tests
 {
     public class UserBuilder
     {
-        private static IList<User> _Friends = new List<User>();
+        private IList<User> _Friends = new List<User>();
         private IList<Trip> _Trips = new List<Trip>();
 
         public static UserBuilder CreateUser()
         {
             return new UserBuilder();
         }
-
 
         public UserBuilder WithFriends(IList<User> friends)
         {

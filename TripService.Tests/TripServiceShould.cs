@@ -7,13 +7,13 @@ namespace TripService.Tests
     [TestFixture]
     public class TripServiceShould
     {
-        private static User _RegisteredUser = new User();
-        private static User _Guest = null;
-        private static Trip _ToLondon = new Trip();
-        private static Trip _ToNewYork = new Trip();
-        private static User _UserA = new User();
+        private static readonly User RegisteredUser = new User();
+        private static readonly User Guest = null;
+        private static readonly Trip ToLondon = new Trip();
+        private static readonly Trip ToNewYork = new Trip();
+        private static readonly User UserA = new User();
         private TripService _TripService;
-        private Mock<TripDao> _TripDao = new Mock<TripDao>();
+        private readonly Mock<TripDao> _TripDao = new Mock<TripDao>();
 
         [SetUp]
         public void Init()
@@ -25,31 +25,31 @@ namespace TripService.Tests
         [ExpectedException(typeof (UserNotLoggedInException))]
         public void ThrowAnExceptionWhenUserIsNotLoggedIn()
         {
-            _TripService.GetFriendTrips(_UserA, _Guest);
+            _TripService.GetFriendTrips(UserA, Guest);
         }
 
         [Test]
         public void NotReturnAnyTripIfUsersAreNotFriends()
         {
             var friend = UserBuilder.CreateUser()
-                .WithFriends(new[] {_UserA})
-                .WithTrips(new[] {_ToLondon, _ToNewYork})
+                .WithFriends(new[] {UserA})
+                .WithTrips(new[] {ToLondon, ToNewYork})
                 .Build();
-            IList<Trip> tripList = _TripService.GetFriendTrips(friend, _RegisteredUser);
+            IList<Trip> tripList = _TripService.GetFriendTrips(friend, RegisteredUser);
             Assert.That(tripList.Count, Is.EqualTo(0));
         }
 
         [Test]
         public void ReturnTripsIfUsersAreFriend()
         {
-            var trips = new List<Trip>{_ToLondon, _ToNewYork};
+            var trips = new List<Trip>{ToLondon, ToNewYork};
             var friend =
                 UserBuilder.CreateUser()
-                .WithFriends(new[] { _RegisteredUser })
+                .WithFriends(new[] { RegisteredUser })
                 .WithTrips(trips).Build();
 
             _TripDao.Setup(a => a.TripsByUser(friend)).Returns(trips);
-            var tripList = _TripService.GetFriendTrips(friend, _RegisteredUser);
+            var tripList = _TripService.GetFriendTrips(friend, RegisteredUser);
             
             Assert.That(tripList.Count, Is.EqualTo(2));
         }
