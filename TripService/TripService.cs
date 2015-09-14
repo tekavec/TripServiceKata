@@ -6,17 +6,19 @@ namespace TripService
     {
         public List<Trip> GetTripsByUser(User user)
         {
-            List<Trip> tripList = new List<Trip>();
             User loggedUser = GetLoggedUser();
-            if (loggedUser != null)
+            if (loggedUser == null)
             {
-                if (user.IsFriendWith(loggedUser))
-                {
-                    tripList = TripsBy(user);
-                }
-                return tripList;
+                throw new UserNotLoggedInException();
             }
-            throw new UserNotLoggedInException();
+            return user.IsFriendWith(loggedUser)
+                ? TripsBy(user) 
+                : NoTrips();
+        }
+
+        private static List<Trip> NoTrips()
+        {
+            return new List<Trip>();
         }
 
         protected virtual List<Trip> TripsBy(User user)
