@@ -26,5 +26,18 @@ namespace TripService
         {
             return _Trips;
         }
+
+        public bool IsFriendWith(User user)
+        {
+            foreach (var friend in _Friends)
+            {
+                if (user.Equals(friend))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }
