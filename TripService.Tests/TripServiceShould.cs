@@ -7,15 +7,18 @@ namespace TripService.Tests
     public class TripServiceShould
     {
         private static User _LoggedUser;
-        private readonly User _RegisteredUser = new User();
-        private readonly User _Guest = null;
-        private readonly User _UserA = new User();
+        private static User _RegisteredUser = new User();
+        private static User _Guest = null;
+        private static Trip _ToLondon = new Trip();
+        private static Trip _ToNewYork = new Trip();
+        private static User _UserA = new User();
         private TestableTripService _TripService;
 
         [SetUp]
         public void Init()
         {
             _TripService = new TestableTripService();
+            _LoggedUser = _RegisteredUser;
         }
 
         [Test]
@@ -30,13 +33,10 @@ namespace TripService.Tests
         [Test]
         public void NotReturnAnyTripIfUsersAreNotFriends()
         {
-            _LoggedUser = _RegisteredUser;
-            var trip = new Trip();
-            _UserA.AddTrip(trip);
-
-            var friend  = new User();
-            friend.AddFriend(_UserA);
-
+            var friend = UserBuilder.CreateUser()
+                .WithFriends(new[] {_UserA})
+                .WithTrips(new[] {_ToLondon, _ToNewYork})
+                .Build();
             IList<Trip> tripList = _TripService.GetTripsByUser(friend);
             Assert.That(tripList.Count, Is.EqualTo(0));
         }
@@ -44,15 +44,14 @@ namespace TripService.Tests
         [Test]
         public void ReturnTripsIfUsersAreFriend()
         {
-            _LoggedUser = _RegisteredUser;
-            var trip = new Trip();
-            var friend = new User();
-            _LoggedUser.AddTrip(trip);
-            friend.AddFriend(_LoggedUser);
+            var friend =
+                UserBuilder.CreateUser()
+                .WithFriends(new[] {_LoggedUser})
+                .WithTrips(new []{_ToLondon, _ToNewYork}).Build();
             
             var tripList = _TripService.GetTripsByUser(friend);
             
-            Assert.That(tripList.Count, Is.EqualTo(1));
+            Assert.That(tripList.Count, Is.EqualTo(2));
         }
 
         private class TestableTripService : TripService
@@ -74,5 +73,4 @@ namespace TripService.Tests
             }
         }
     }
-
 }

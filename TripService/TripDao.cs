@@ -6,7 +6,7 @@ namespace TripService
     {
         public static List<Trip> FindTripsByUser(User user)
         {
-            throw new System.NotImplementedException();
+            throw new System.NotImplementedException("Here would be a real implementation. This method must not be called from the tests.");
         }
     }
 }
