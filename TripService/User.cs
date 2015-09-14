@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace TripService
 {
@@ -29,15 +30,7 @@ namespace TripService
 
         public bool IsFriendWith(User user)
         {
-            foreach (var friend in _Friends)
-            {
-                if (user.Equals(friend))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return Enumerable.Contains(_Friends, user);
         }
-
     }
 }

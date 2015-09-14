@@ -10,7 +10,7 @@ namespace TripService.Tests.UnitTests
         [ExpectedException(typeof(NotImplementedException))]
         public void ReturnTripsByAUser()
         {
-            new TripDao().TripsByUser(new User())   ;
+            new TripDao().TripsByUser(new User());
         }
     }
 }

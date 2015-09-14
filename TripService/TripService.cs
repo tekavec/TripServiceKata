@@ -11,15 +11,20 @@ namespace TripService
             _TripDao = tripDao;
         }
 
-        public virtual List<Trip> GetTripsByUser(User user, User loggedInUser)
+        public virtual List<Trip> GetFriendTrips(User friend, User loggedInUser)
+        {
+            ValidateUser(loggedInUser);
+            return friend.IsFriendWith(loggedInUser)
+                ? TripsBy(friend) 
+                : NoTrips();
+        }
+
+        private static void ValidateUser(User loggedInUser)
         {
             if (loggedInUser == null)
             {
                 throw new UserNotLoggedInException();
             }
-            return user.IsFriendWith(loggedInUser)
-                ? TripsBy(user) 
-                : NoTrips();
         }
 
         private static List<Trip> NoTrips()

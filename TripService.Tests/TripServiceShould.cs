@@ -25,7 +25,7 @@ namespace TripService.Tests
         [ExpectedException(typeof (UserNotLoggedInException))]
         public void ThrowAnExceptionWhenUserIsNotLoggedIn()
         {
-            _TripService.GetTripsByUser(_UserA, _Guest);
+            _TripService.GetFriendTrips(_UserA, _Guest);
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace TripService.Tests
                 .WithFriends(new[] {_UserA})
                 .WithTrips(new[] {_ToLondon, _ToNewYork})
                 .Build();
-            IList<Trip> tripList = _TripService.GetTripsByUser(friend, _RegisteredUser);
+            IList<Trip> tripList = _TripService.GetFriendTrips(friend, _RegisteredUser);
             Assert.That(tripList.Count, Is.EqualTo(0));
         }
 
@@ -49,7 +49,7 @@ namespace TripService.Tests
                 .WithTrips(trips).Build();
 
             _TripDao.Setup(a => a.TripsByUser(friend)).Returns(trips);
-            var tripList = _TripService.GetTripsByUser(friend, _RegisteredUser);
+            var tripList = _TripService.GetFriendTrips(friend, _RegisteredUser);
             
             Assert.That(tripList.Count, Is.EqualTo(2));
         }
